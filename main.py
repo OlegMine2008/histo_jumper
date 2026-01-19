@@ -1,5 +1,5 @@
 import arcade
-#
+
 
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 960
@@ -11,27 +11,32 @@ JUMP_SPEED = 40  # Начальный импульс прыжка, пикс/с
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
 MAX_JUMPS = 1  # С двойным прыжком всё лучше, но не сегодня
-SCREEN_TITLE = "Real Jump"
+SCREEN_TITLE = "Histo Jumper"
 
 
 class MyGame(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
         arcade.set_background_color(arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.ASH_GREY)
 
     def setup(self):
         # Спрайт игрока
         self.player = arcade.Sprite(
-            "Новый проект.png", scale=0.5)
+            "materials/Новый проект.png", scale=0.5)
         self.player.center_x = 50
         self.player.center_y = 50
         self.player_spritelist = arcade.SpriteList()
         self.player_spritelist.append(self.player)
 
-        self.tile_map = arcade.load_tilemap("testmap.json",
+        self.world_camera = arcade.camera.Camera2D()  # Камера для игрового мира
+        self.gui_camera = arcade.camera.Camera2D()
+
+        self.tile_map = arcade.load_tilemap("materials/here.json",
                                             scaling=0.5)  # Во встроенных ресурсах есть даже уровни!
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
-
+        self.orbs = self.tile_map.sprite_lists['orbs']
+        self.jumppads = self.tile_map.sprite_lists['jumppads']
         # Ввод
         self.left = self.right = self.jump_pressed = False
         self.jump_buffer_timer = 0.0
@@ -48,6 +53,8 @@ class MyGame(arcade.Window):
         self.clear()
         self.player_spritelist.draw()
         self.scene.draw()
+        self.gui_camera.use()
+        self.world_camera.use()
 
     def on_update(self, delta_time):
         # Гравитация (если хочешь)
@@ -81,6 +88,23 @@ class MyGame(arcade.Window):
                 # Просим движок прыгнуть: он корректно задаст начальную вертикальную скорость
                 self.engine.jump(JUMP_SPEED)
                 self.jump_buffer_timer = 0
+        
+        if arcade.check_for_collision_with_list(self.player, self.jumppads):
+            self.engine.jump(JUMP_SPEED)
+            self.jump_buffer_timer = 0
+        elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed:
+            self.engine.jump(JUMP_SPEED)
+            self.jump_buffer_timer = 0
+        
+        position = (
+            self.player.center_x,
+            self.player.center_y
+        )
+        self.world_camera.position = arcade.math.lerp_2d(  # Изменяем позицию камеры
+            self.world_camera.position,
+            position,
+            0.1
+        )
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
@@ -106,7 +130,7 @@ class MyGame(arcade.Window):
                 self.player.change_y *= 0.45
 
 
-def setup_game(width=960, height=640, title="Real Jump"):
+def setup_game(width=960, height=640, title="Histo Jump"):
     game = MyGame(width, height, title)
     game.setup()
     return game
