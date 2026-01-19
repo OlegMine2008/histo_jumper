@@ -1,5 +1,5 @@
 import arcade
-# .....
+#
 
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 960
