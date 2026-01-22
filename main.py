@@ -4,9 +4,9 @@ import arcade
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 960
 # Физика и движение
-GRAVITY = 2  # Пикс/с^2
-MOVE_SPEED = 6  # Пикс/с
-JUMP_SPEED = 40  # Начальный импульс прыжка, пикс/с
+GRAVITY = 0.1  # Пикс/с^2
+MOVE_SPEED = 4  # Пикс/с
+JUMP_SPEED = 7  # Начальный импульс прыжка, пикс/с
 # Качество жизни прыжка
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
@@ -23,20 +23,20 @@ class MyGame(arcade.Window):
     def setup(self):
         # Спрайт игрока
         self.player = arcade.Sprite(
-            "materials/Новый проект.png", scale=0.5)
-        self.player.center_x = 50
-        self.player.center_y = 50
+            "materials/character_test.png", scale=1)
         self.player_spritelist = arcade.SpriteList()
         self.player_spritelist.append(self.player)
 
         self.world_camera = arcade.camera.Camera2D()  # Камера для игрового мира
         self.gui_camera = arcade.camera.Camera2D()
 
-        self.tile_map = arcade.load_tilemap("materials/here.json",
-                                            scaling=0.5)  # Во встроенных ресурсах есть даже уровни!
+        self.tile_map = arcade.load_tilemap("materials/level1.json",
+                                            scaling=1)  # Во встроенных ресурсах есть даже уровни!
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.orbs = self.tile_map.sprite_lists['orbs']
         self.jumppads = self.tile_map.sprite_lists['jumppads']
+        self.player.center_x = self.tile_map.sprite_lists['spawn']._get_center()[0]
+        self.player.center_y = self.tile_map.sprite_lists['spawn']._get_center()[1]
         # Ввод
         self.left = self.right = self.jump_pressed = False
         self.jump_buffer_timer = 0.0
