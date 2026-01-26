@@ -1,0 +1,46 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "comp_lvl2.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "comp_lvl2.tmx": {
+            "scale": 1,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1763.5,
+                "y": 923
+            }
+        },
+        "comp_lvl_1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "comp_lvl_2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "D:/MyNewWork/yandex/repo/histo_jumper/materials",
+    "last.imagePath": "D:/MyNewWork/yandex/repo/histo_jumper/materials",
+    "map.height": 75,
+    "map.lastUsedExportFilter": "Все файлы (*)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 60,
+    "openFiles": [
+        "comp_lvl2.tmx",
+        "comp_lvl_2.tsx",
+        "comp_lvl_1.tsx"
+    ],
+    "project": "comp_lvl.tiled-project",
+    "recentFiles": [
+        "comp_lvl_1.tsx",
+        "comp_lvl_2.tsx",
+        "comp_lvl2.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
