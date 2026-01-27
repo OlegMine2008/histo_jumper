@@ -7,11 +7,12 @@ SCREEN_HEIGHT = 960
 GRAVITY = 0.1  # Пикс/с^2
 MOVE_SPEED = 4  # Пикс/с
 JUMP_SPEED = 7  # Начальный импульс прыжка, пикс/с
+ROTATION_SPEED = 1 # Скорость вращения шара
 # Качество жизни прыжка
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
 MAX_JUMPS = 1  # С двойным прыжком всё лучше, но не сегодня
-SCREEN_TITLE = "Histo Jumper"
+SCREEN_TITLE = "Just A Jumper"
 
 
 class MyGame(arcade.Window):
@@ -112,8 +113,10 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
             self.left = True
+            self.player.change_angle = True
         elif key in (arcade.key.RIGHT, arcade.key.D):
             self.right = True
+            self.player.change_angle = True
         elif key in (arcade.key.SPACE, arcade.key.UP, arcade.key.W):
             self.jump_pressed = True
             self.jump_buffer_timer = JUMP_BUFFER
@@ -121,8 +124,10 @@ class MyGame(arcade.Window):
     def on_key_release(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
             self.left = False
+            self.player.change_angle = False
         elif key in (arcade.key.RIGHT, arcade.key.D):
             self.right = False
+            self.player.change_angle = False
         elif key in (arcade.key.SPACE, arcade.key.UP, arcade.key.W):
             self.jump_pressed = False
             # Вариативная высота прыжка: отпустили рано — подрежем скорость вверх

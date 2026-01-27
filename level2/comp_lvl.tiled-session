@@ -3,17 +3,29 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "comp_lvl2.tmx",
+    "activeFile": "D:/MyNewWork/yandex/repo/histo_jumper/level1/level1.tmx",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Все файлы (*)",
     "fileStates": {
-        "comp_lvl2.tmx": {
-            "scale": 1,
-            "selectedLayer": 5,
+        "D:/MyNewWork/yandex/repo/histo_jumper/level1/geometry_level_tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/MyNewWork/yandex/repo/histo_jumper/level1/level1.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1763.5,
-                "y": 923
+                "x": 344.25,
+                "y": 163.5
+            }
+        },
+        "comp_lvl2.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1764,
+                "y": 1268
             }
         },
         "comp_lvl_1.tsx": {
@@ -34,13 +46,15 @@
     "openFiles": [
         "comp_lvl2.tmx",
         "comp_lvl_2.tsx",
-        "comp_lvl_1.tsx"
+        "comp_lvl_1.tsx",
+        "D:/MyNewWork/yandex/repo/histo_jumper/level1/level1.tmx"
     ],
     "project": "comp_lvl.tiled-project",
     "recentFiles": [
-        "comp_lvl_1.tsx",
+        "comp_lvl2.tmx",
         "comp_lvl_2.tsx",
-        "comp_lvl2.tmx"
+        "comp_lvl_1.tsx",
+        "D:/MyNewWork/yandex/repo/histo_jumper/level1/level1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
