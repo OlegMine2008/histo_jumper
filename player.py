@@ -5,9 +5,9 @@ SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 960
 # Физика и движение
 GRAVITY = 0.1  # Пикс/с^2
-MOVE_SPEED = 4  # Пикс/с
-JUMP_SPEED = 7  # Начальный импульс прыжка, пикс/с
-ROTATION_SPEED = 1 # Скорость вращения шара
+MOVE_SPEED = 9  # Пикс/с
+JUMP_SPEED = 8  # Начальный импульс прыжка, пикс/с
+ROTATION_SPEED = 10 # Скорость вращения шара
 # Качество жизни прыжка
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
@@ -24,7 +24,7 @@ class MyGame(arcade.Window):
     def setup(self):
         # Спрайт игрока
         self.player = arcade.Sprite(
-            "materials/character_test.png", scale=1)
+            "materials/character_test.png", scale=2)
         self.player_spritelist = arcade.SpriteList()
         self.player_spritelist.append(self.player)
 
@@ -32,7 +32,7 @@ class MyGame(arcade.Window):
         self.gui_camera = arcade.camera.Camera2D()
 
         self.tile_map = arcade.load_tilemap("materials/level1.json",
-                                            scaling=1)  # Во встроенных ресурсах есть даже уровни!
+                                            scaling=2)  # Во встроенных ресурсах есть даже уровни!
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.orbs = self.tile_map.sprite_lists['orbs']
         self.jumppads = self.tile_map.sprite_lists['jumppads']
@@ -106,6 +106,13 @@ class MyGame(arcade.Window):
             position,
             0.1
         )
+
+        # Заставляем шар кататься если change_angle истиннен
+        if self.player.change_angle:
+            if self.left and not self.right:
+                self.player.angle -= ROTATION_SPEED
+            elif self.right and not self.left:
+                self.player.angle += ROTATION_SPEED
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
