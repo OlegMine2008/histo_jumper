@@ -1,13 +1,13 @@
 import arcade
 
 
-SCREEN_WIDTH = 960
-SCREEN_HEIGHT = 960
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 600
 # Физика и движение
 GRAVITY = 0.1  # Пикс/с^2
 MOVE_SPEED = 9  # Пикс/с
 JUMP_SPEED = 8  # Начальный импульс прыжка, пикс/с
-ROTATION_SPEED = 10 # Скорость вращения шара
+ROTATION_SPEED = 9 # Скорость вращения шара
 # Качество жизни прыжка
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
@@ -15,9 +15,9 @@ MAX_JUMPS = 1  # С двойным прыжком всё лучше, но не �
 SCREEN_TITLE = "Just A Jumper"
 
 
-class MyGame(arcade.Window):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+class MyGame(arcade.View):
+    def __init__(self, width, height, level):
+        super().__init__(width, height)
         arcade.set_background_color(arcade.color.BLACK)
         arcade.set_background_color(arcade.color.ASH_GREY)
 
@@ -107,8 +107,8 @@ class MyGame(arcade.Window):
             0.1
         )
 
-        # Заставляем шар кататься если change_angle истиннен
-        if self.player.change_angle:
+        # Заставляем шар кататься если change_angle истиннен и движение на земле
+        if self.player.change_angle and grounded:
             if self.left and not self.right:
                 self.player.angle -= ROTATION_SPEED
             elif self.right and not self.left:
