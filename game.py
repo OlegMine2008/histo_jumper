@@ -16,10 +16,10 @@ SCREEN_TITLE = "Just A Jumper"
 
 
 class MyGame(arcade.View):
-    def __init__(self, width, height, level):
-        super().__init__(width, height)
-        arcade.set_background_color(arcade.color.BLACK)
+    def __init__(self, level="materials/level1.json"):
+        super().__init__()
         arcade.set_background_color(arcade.color.ASH_GREY)
+        self.level = level
 
     def setup(self):
         # Спрайт игрока
@@ -31,7 +31,7 @@ class MyGame(arcade.View):
         self.world_camera = arcade.camera.Camera2D()  # Камера для игрового мира
         self.gui_camera = arcade.camera.Camera2D()
 
-        self.tile_map = arcade.load_tilemap("materials/level1.json",
+        self.tile_map = arcade.load_tilemap(self.level,
                                             scaling=2)  # Во встроенных ресурсах есть даже уровни!
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.orbs = self.tile_map.sprite_lists['orbs']
@@ -52,10 +52,10 @@ class MyGame(arcade.View):
 
     def on_draw(self):
         self.clear()
+        self.world_camera.use()
         self.player_spritelist.draw()
         self.scene.draw()
         self.gui_camera.use()
-        self.world_camera.use()
 
     def on_update(self, delta_time):
         # Гравитация (если хочешь)
@@ -142,13 +142,15 @@ class MyGame(arcade.View):
                 self.player.change_y *= 0.45
 
 
-def setup_game(width=960, height=640, title="Histo Jump"):
-    game = MyGame(width, height, title)
+def setup_game(width=SCREEN_WIDTH, height=SCREEN_HEIGHT, title=SCREEN_TITLE):
+    window = arcade.Window(width, height, title)
+    game = MyGame()
     game.setup()
-    return game
+    window.show_view(game)
+    return window
 
 def main():
-    setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window = setup_game()
     arcade.run()
 
 
