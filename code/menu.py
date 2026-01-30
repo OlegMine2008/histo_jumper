@@ -1,11 +1,12 @@
 import arcade
+import game
 
 from pyglet.graphics import Batch
 
 
 class GameMenu(arcade.View):
-    def __init__(self, widht, height, background_color=None):
-        super().__init__(widht, height)
+    def __init__(self):
+        super().__init__()
         
         self.batch = Batch()
         self.logo = arcade.load_texture('materials/Logo1.png', 600, 162)
@@ -16,7 +17,8 @@ class GameMenu(arcade.View):
         arcade.draw_texture_rect(self.logo)
 
 
-window = arcade.Window(1200, 600, "Учимся ставить на паузу")
-menu_view = GameMenu(1200, 600)
-window.show_view(menu_view)
-arcade.run()
+if __name__ == '__main__':
+    window = arcade.Window(1200, 600, "Учимся ставить на паузу")
+    menu_view = GameMenu()
+    window.show_view(menu_view)
+    arcade.run()
