@@ -1,4 +1,4 @@
-import game as g
+import platformer as g
 import menu as me
 
 

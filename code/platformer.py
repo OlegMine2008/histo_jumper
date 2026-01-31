@@ -1,4 +1,5 @@
 import arcade
+import menu
 
 
 SCREEN_WIDTH = 1200
@@ -36,8 +37,12 @@ class MyGame(arcade.View):
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.orbs = self.tile_map.sprite_lists['orbs']
         self.jumppads = self.tile_map.sprite_lists['jumppads']
-        self.player.center_x = self.tile_map.sprite_lists['spawn']._get_center()[0]
-        self.player.center_y = self.tile_map.sprite_lists['spawn']._get_center()[1]
+        self.danger = self.tile_map.sprite_lists['danger']
+        self.end = self.tile_map.sprite_lists['end']
+        self.spawn_x = self.tile_map.sprite_lists['spawn']._get_center()[0]
+        self.spawn_y = self.tile_map.sprite_lists['spawn']._get_center()[1]
+        self.player.center_x = self.spawn_x
+        self.player.center_y = self.spawn_y
         # Ввод
         self.left = self.right = self.jump_pressed = False
         self.jump_buffer_timer = 0.0
@@ -113,6 +118,21 @@ class MyGame(arcade.View):
                 self.player.angle -= ROTATION_SPEED
             elif self.right and not self.left:
                 self.player.angle += ROTATION_SPEED
+        elif self.player.change_angle and not grounded:
+            if self.left and not self.right:
+                self.player.angle -= ROTATION_SPEED // 2
+            elif self.right and not self.left:
+                self.player.angle += ROTATION_SPEED // 2
+            
+        # Шипы и прочая угроза
+        if arcade.check_for_collision_with_list(self.player, self.danger):
+            self.player.center_x = self.spawn_x
+            self.player.center_y = self.spawn_y
+
+        # Теперь финиш - если доходит до финиша, то игра переключается в меню(и сохраняет прогресс для звездочки)
+        if arcade.check_for_collision_with_list(self.player, self.end):
+            men = menu.GameMenu()
+            self.window.show_view(men)
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
