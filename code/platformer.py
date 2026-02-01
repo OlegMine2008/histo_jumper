@@ -12,15 +12,27 @@ ROTATION_SPEED = 9 # Скорость вращения шара
 # Качество жизни прыжка
 COYOTE_TIME = 0.08  # Сколько после схода с платформы можно ещё прыгнуть
 JUMP_BUFFER = 0.12  # Если нажали прыжок чуть раньше приземления, мы его «запомним» (тоже лайфхак для улучшения качества жизни игрока)
-MAX_JUMPS = 1  # С двойным прыжком всё лучше, но не сегодня
+MAX_JUMPS = 1
 SCREEN_TITLE = "Just A Jumper"
 
 
 class MyGame(arcade.View):
     def __init__(self, level="materials/level1.json"):
         super().__init__()
-        arcade.set_background_color(arcade.color.ASH_GREY)
+        if 'level2' in level:
+            arcade.set_background_color(arcade.color.BLACK) # Используем двоичную текстуру игрока
+        else:
+            pass # используем обычную текстуру игрока
         self.level = level
+        self.darkness_alpha = 0
+        self.is_darkening = False
+        self.is_lightening = False
+        self.darkness_speed = 100
+        self.lightening_speed = 0.5
+        
+        # Инициализируем player здесь, чтобы он был доступен во всех методах
+        self.player = None
+        self.setup()  # Вызываем setup сразу после инициализации
 
     def setup(self):
         # Спрайт игрока
@@ -48,6 +60,13 @@ class MyGame(arcade.View):
         self.jump_buffer_timer = 0.0
         self.time_since_ground = 999.0
         self.jumps_left = MAX_JUMPS
+        
+        # Эффект затемнения
+        self.darkness_alpha = 0
+        self.is_darkening = False
+        self.is_lightening = False
+
+        # Музыка уровней
 
         self.engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player,
@@ -58,9 +77,18 @@ class MyGame(arcade.View):
     def on_draw(self):
         self.clear()
         self.world_camera.use()
-        self.player_spritelist.draw()
+        if self.player:  # Проверяем, что player существует
+            self.player_spritelist.draw()
         self.scene.draw()
-        self.gui_camera.use()
+        
+        if self.darkness_alpha > 0:
+            arcade.draw_lbwh_rectangle_filled(
+                left=-SCREEN_WIDTH,
+                bottom=0,
+                width=(SCREEN_WIDTH * 4),
+                height=(SCREEN_HEIGHT * 4),
+                color=(0, 0, 0, int(self.darkness_alpha))
+            )
 
     def on_update(self, delta_time):
         # Гравитация (если хочешь)
@@ -123,11 +151,34 @@ class MyGame(arcade.View):
                 self.player.angle -= ROTATION_SPEED // 2
             elif self.right and not self.left:
                 self.player.angle += ROTATION_SPEED // 2
-            
+        
         # Шипы и прочая угроза
         if arcade.check_for_collision_with_list(self.player, self.danger):
+            self.is_darkening = True
+            self.is_lightening = False
+            # Возвращаем игрока на спавн
             self.player.center_x = self.spawn_x
             self.player.center_y = self.spawn_y
+
+        # Обновление эффекта затемнения
+        if self.darkness_alpha > 0:
+            self.darkness_alpha -= self.darkness_speed * delta_time
+            if self.darkness_alpha < 0:
+                self.darkness_alpha = 0
+                self.is_darkening = False
+        
+        # Эффект смерти
+        if self.is_darkening:
+            self.darkness_alpha += self.darkness_speed
+            if self.darkness_alpha >= 255:
+                self.darkness_alpha = 255
+                self.is_darkening = False
+                self.is_lightening = True
+        elif self.is_lightening:
+            self.darkness_alpha -= self.lightening_speed
+            if self.darkness_alpha <= 0:
+                self.darkness_alpha = 0
+                self.is_lightening = False
 
         # Теперь финиш - если доходит до финиша, то игра переключается в меню(и сохраняет прогресс для звездочки)
         if arcade.check_for_collision_with_list(self.player, self.end):
