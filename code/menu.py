@@ -50,7 +50,7 @@ class GameMenu(arcade.View):
             options=["Геометрия", "Машинный код", "Корзина", "Файлы"], 
             width=600
         )
-        dropdown.on_change = lambda value: self.on_dropdown_change(value, level_map)
+        dropdown.on_change = lambda event: self.on_dropdown_change(event.new_value, level_map)
         self.box_layout.add(dropdown)
         
         flat_button = UIFlatButton(

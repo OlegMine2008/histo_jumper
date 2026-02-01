@@ -68,6 +68,11 @@ class MyGame(arcade.View):
 
         # Музыка уровней
 
+        # Звуки(удар об препятствие, прыжок, батут или орб)
+        self.breaki = arcade.load_sound('audio/death.mp3')
+        self.jump = arcade.load_sound('audio/jump.mp3')
+        self.orb = arcade.load_sound('audio/orb.mp3')
+
         self.engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player,
             gravity_constant=GRAVITY,
@@ -122,13 +127,16 @@ class MyGame(arcade.View):
                 # Просим движок прыгнуть: он корректно задаст начальную вертикальную скорость
                 self.engine.jump(JUMP_SPEED)
                 self.jump_buffer_timer = 0
+                self.jump.play()
         
         if arcade.check_for_collision_with_list(self.player, self.jumppads):
             self.engine.jump(JUMP_SPEED)
             self.jump_buffer_timer = 0
+            self.orb.play(volume=0.5)
         elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed:
             self.engine.jump(JUMP_SPEED)
             self.jump_buffer_timer = 0
+            self.orb.play(volume=0.5)
         
         position = (
             self.player.center_x,
@@ -159,6 +167,7 @@ class MyGame(arcade.View):
             # Возвращаем игрока на спавн
             self.player.center_x = self.spawn_x
             self.player.center_y = self.spawn_y
+            self.breaki.play()
 
         # Обновление эффекта затемнения
         if self.darkness_alpha > 0:
