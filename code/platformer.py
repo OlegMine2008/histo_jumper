@@ -20,9 +20,9 @@ class MyGame(arcade.View):
     def __init__(self, level="materials/level1.json"):
         super().__init__()
         if 'level2' in level:
-            arcade.set_background_color(arcade.color.BLACK) # Используем двоичную текстуру игрока
+            arcade.set_background_color(arcade.color.BLACK)
         else:
-            pass # используем обычную текстуру игрока
+            arcade.set_background_color(arcade.color.ASH)
         self.level = level
         self.darkness_alpha = 0
         self.is_darkening = False
@@ -67,6 +67,12 @@ class MyGame(arcade.View):
         self.is_lightening = False
 
         # Музыка уровней
+        if 'level1' in self.level:
+            self.lvl = arcade.load_sound('music/Jumper-lvl1.mp3')
+        elif 'level2' in self.level:
+            self.lvl = arcade.load_sound('music/ComputerAmbience-lvl2.mp3')
+        elif 'level3' in self.level:
+            self.lvl = arcade.load_sound('music/SneakySnitch-lvl3.mp3')
 
         # Звуки(удар об препятствие, прыжок, батут или орб)
         self.breaki = arcade.load_sound('audio/death.mp3')
@@ -196,6 +202,7 @@ class MyGame(arcade.View):
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
+        arcade.play_sound(self.lvl, looping=True)
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
