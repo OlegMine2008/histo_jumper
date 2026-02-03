@@ -22,7 +22,7 @@ class MyGame(arcade.View):
         if 'level2' in level:
             arcade.set_background_color(arcade.color.BLACK)
         else:
-            arcade.set_background_color(arcade.color.ASH)
+            arcade.set_background_color(arcade.color.ASH_GREY)
         self.level = level
         self.darkness_alpha = 0
         self.is_darkening = False
@@ -198,11 +198,12 @@ class MyGame(arcade.View):
         # Теперь финиш - если доходит до финиша, то игра переключается в меню(и сохраняет прогресс для звездочки)
         if arcade.check_for_collision_with_list(self.player, self.end):
             men = menu.GameMenu()
+            men.window = self.window  # Добавляем ссылку на окно
             self.window.show_view(men)
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
-        arcade.play_sound(self.lvl, looping=True)
+        arcade.play_sound(self.lvl, loop=True)
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
