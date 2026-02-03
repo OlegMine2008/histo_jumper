@@ -1,5 +1,6 @@
 import arcade
 import menu
+import time
 
 
 SCREEN_WIDTH = 1200
@@ -29,6 +30,10 @@ class MyGame(arcade.View):
         self.is_lightening = False
         self.darkness_speed = 100
         self.lightening_speed = 0.5
+        
+        # Время для проверки звука
+        self.last_sound_time = 0
+        self.sound_cooldown = 0.1
         
         # Инициализируем player здесь, чтобы он был доступен во всех методах
         self.player = None
@@ -103,6 +108,8 @@ class MyGame(arcade.View):
             )
 
     def on_update(self, delta_time):
+        current_time = time.time()
+
         # Гравитация (если хочешь)
         self.player.change_y -= GRAVITY
 
@@ -134,16 +141,19 @@ class MyGame(arcade.View):
                 # Просим движок прыгнуть: он корректно задаст начальную вертикальную скорость
                 self.engine.jump(JUMP_SPEED)
                 self.jump_buffer_timer = 0
-                self.jump.play()
+                if current_time - self.last_sound_time >= self.sound_cooldown:
+                    self.play_sound('jump')
         
         if arcade.check_for_collision_with_list(self.player, self.jumppads):
             self.engine.jump(JUMP_SPEED + 2)
             self.jump_buffer_timer = 0
-            self.orb.play(volume=0.5)
+            if current_time - self.last_sound_time >= self.sound_cooldown:
+                self.play_sound('orb')
         elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed and want_jump:
             self.engine.jump(JUMP_SPEED + 2)
             self.jump_buffer_timer = 0
-            self.orb.play(volume=0.5)
+            if current_time - self.last_sound_time >= self.sound_cooldown:
+                self.play_sound('orb')
         
         position = (
             self.player.center_x,
@@ -174,7 +184,8 @@ class MyGame(arcade.View):
             # Возвращаем игрока на спавн
             self.player.center_x = self.spawn_x
             self.player.center_y = self.spawn_y
-            self.breaki.play()
+            if current_time - self.last_sound_time >= self.sound_cooldown:
+                self.breaki.play()
 
         # Обновление эффекта затемнения
         if self.darkness_alpha > 0:
@@ -207,8 +218,17 @@ class MyGame(arcade.View):
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
         if not self.playing:
-            arcade.play_sound(self.lvl, loop=True)
+            arcade.play_sound(self.lvl, loop=True, volume=0.7)
             self.playing = True
+        
+    def play_sound(self, sound):
+        if sound == 'orb':
+            self.orb.play(volume=0.5)
+        elif sound == 'jump':
+            self.jump.play(volume=0.5)
+        elif sound == 'death':
+            self.breaki.play(volume=0.5)
+        self.last_sound_time = time.time()
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
