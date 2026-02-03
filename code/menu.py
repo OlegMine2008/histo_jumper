@@ -10,45 +10,48 @@ class GameMenu(arcade.View):
     def __init__(self):
         super().__init__()
         self.background = arcade.load_texture('materials/menu_background.png')
-        
-        self.logo = arcade.Sprite('materials/Logo1.png', center_x=600, center_y=460)
+    
+        # Создаем камеру для меню
+        self.camera = arcade.camera.Camera2D()
+    
+        self.logo = arcade.Sprite('materials/Logo1.png', scale=0.8)
         self.menu_list = arcade.SpriteList()
         self.menu_list.append(self.logo)
 
         # Переменная выбора уровня - храним путь к файлу
         self.level = 'materials/level1.json'
-        
+    
         # UIManager — сердце GUI
         self.manager = UIManager()
         self.manager.enable()  # Включить, чтоб виджеты работали
-        
+    
         # Layout для организации — как полки в шкафу
         self.anchor_layout = UIAnchorLayout()  # Центрирует виджеты
         self.box_layout = UIBoxLayout(vertical=True, space_between=20)  # Вертикальный стек
-        
+    
         # Добавим все виджеты в box, потом box в anchor
         self.setup_widgets()  # Функция ниже
-        
-        self.manager.add(self.anchor_layout)  # Всё в manager
+    
+        self.manager.add(self.anchor_layout)
     
     def on_draw(self):
         self.clear()
     
+        # Используем камеру меню
+        self.camera.use()
+    
         # Рисуем фон
         arcade.draw_texture_rect(
-            texture=self.background,
-            rect=arcade.Rect(
-                (self.window.width // 2) if self.window else 600,
-                (self.window.height // 2) if self.window else 300,
-                self.window.width if self.window else 1200,
-                self.window.height if self.window else 600,
-                1200,
-                600,
-                600, 300
-            )
+            self.background,
+            arcade.Rect(0, 1200, 0, 600, 1200, 600, 600, 300)
         )
+
     
+        # Обновляем позицию логотипа
+        self.logo.center_x = 600
+        self.logo.center_y = 420
         self.menu_list.draw()
+        # Рисуем UI поверх всего
         self.manager.draw()
 
     
@@ -56,8 +59,8 @@ class GameMenu(arcade.View):
         level_map = {
             "Геометрия": 'materials/level1.json',
             "Машинный код": 'materials/level2.json',
-            "Корзина": 'materials/level3.json',
-            "Файлы": 'materials/level4.json'
+            "Проводник": 'materials/level3.json',
+            "Родной Файл": 'materials/level4.json'
         }
         
         dropdown = UIDropdown(
@@ -112,8 +115,12 @@ class GameMenu(arcade.View):
     def on_show_view(self):
         self.manager.enable()
     
+        # Убеждаемся, что камера установлена
+        self.camera.use()
+    
     def on_hide_view(self):
         self.manager.disable()
+
 
 
 if __name__ == '__main__':
