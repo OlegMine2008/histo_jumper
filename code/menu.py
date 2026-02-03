@@ -33,17 +33,24 @@ class GameMenu(arcade.View):
     
     def on_draw(self):
         self.clear()
+    
         # Рисуем фон
-        arcade.draw_texture_rectangle(
-            center_x=self.window.width // 2 if self.window else 600,
-            center_y=self.window.height // 2 if self.window else 300,
-            width=self.window.width if self.window else 1200,
-            height=self.window.height if self.window else 600,
-            texture=self.background
+        arcade.draw_texture_rect(
+            texture=self.background,
+            rect=arcade.Rect(
+                (self.window.width // 2) if self.window else 600,
+                (self.window.height // 2) if self.window else 300,
+                self.window.width if self.window else 1200,
+                self.window.height if self.window else 600,
+                1200,
+                600,
+                600, 300
+            )
         )
     
         self.menu_list.draw()
         self.manager.draw()
+
     
     def setup_widgets(self):
         level_map = {
@@ -104,6 +111,9 @@ class GameMenu(arcade.View):
     
     def on_show_view(self):
         self.manager.enable()
+    
+    def on_hide_view(self):
+        self.manager.disable()
 
 
 if __name__ == '__main__':

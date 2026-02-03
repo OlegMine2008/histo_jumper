@@ -136,11 +136,11 @@ class MyGame(arcade.View):
                 self.jump.play()
         
         if arcade.check_for_collision_with_list(self.player, self.jumppads):
-            self.engine.jump(JUMP_SPEED)
+            self.engine.jump(JUMP_SPEED + 2)
             self.jump_buffer_timer = 0
             self.orb.play(volume=0.5)
-        elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed:
-            self.engine.jump(JUMP_SPEED)
+        elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed and want_jump:
+            self.engine.jump(JUMP_SPEED + 2)
             self.jump_buffer_timer = 0
             self.orb.play(volume=0.5)
         
@@ -203,7 +203,7 @@ class MyGame(arcade.View):
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
-        arcade.play_sound(self.lvl, loop=True)
+#         arcade.play_sound(self.lvl, loop=True)
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
