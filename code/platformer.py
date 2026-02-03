@@ -37,6 +37,7 @@ class MyGame(arcade.View):
         
         # Инициализируем player здесь, чтобы он был доступен во всех методах
         self.player = None
+        self.lvl_player = None
         self.setup()  # Вызываем setup сразу после инициализации
 
     def setup(self):
@@ -149,7 +150,7 @@ class MyGame(arcade.View):
             self.jump_buffer_timer = 0
             if current_time - self.last_sound_time >= self.sound_cooldown:
                 self.play_sound('orb')
-        elif arcade.check_for_collision_with_list(self.player, self.orbs) and self.jump_pressed and want_jump:
+        elif arcade.check_for_collision_with_list(self.player, self.orbs)  and self.jump_buffer_timer > 0:
             self.engine.jump(JUMP_SPEED + 2)
             self.jump_buffer_timer = 0
             if current_time - self.last_sound_time >= self.sound_cooldown:
@@ -211,14 +212,14 @@ class MyGame(arcade.View):
         if arcade.check_for_collision_with_list(self.player, self.end):
             men = menu.GameMenu()
             men.window = self.window  # Добавляем ссылку на окно
-            self.playing = False
-            arcade.stop_sound(self.lvl)
+            if self.lvl_player:
+                self.lvl_player.pause()
             self.window.show_view(men)
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
         if not self.playing:
-            arcade.play_sound(self.lvl, loop=True, volume=0.7)
+            self.lvl_player = arcade.play_sound(self.lvl, loop=True, volume=0.7)
             self.playing = True
         
     def play_sound(self, sound):
