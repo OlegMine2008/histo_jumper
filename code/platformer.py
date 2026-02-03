@@ -73,6 +73,7 @@ class MyGame(arcade.View):
             self.lvl = arcade.load_sound('music/ComputerAmbience-lvl2.mp3')
         elif 'level3' in self.level:
             self.lvl = arcade.load_sound('music/SneakySnitch-lvl3.mp3')
+        self.playing = False
 
         # Звуки(удар об препятствие, прыжок, батут или орб)
         self.breaki = arcade.load_sound('audio/death.mp3')
@@ -199,11 +200,15 @@ class MyGame(arcade.View):
         if arcade.check_for_collision_with_list(self.player, self.end):
             men = menu.GameMenu()
             men.window = self.window  # Добавляем ссылку на окно
+            self.playing = False
+            arcade.stop_sound(self.lvl)
             self.window.show_view(men)
 
         # Обновляем физику — движок сам двинет игрока и платформы
         self.engine.update()
-#         arcade.play_sound(self.lvl, loop=True)
+        if not self.playing:
+            arcade.play_sound(self.lvl, loop=True)
+            self.playing = True
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.LEFT, arcade.key.A):
