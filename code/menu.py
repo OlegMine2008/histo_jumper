@@ -60,11 +60,12 @@ class GameMenu(arcade.View):
             "Геометрия": 'materials/level1.json',
             "Машинный код": 'materials/level2.json',
             "Проводник": 'materials/level3.json',
-            "Родной Файл": 'materials/level4.json'
+            "Родной Файл: Пропуск": 'materials/level4.json',
+            "Родной Файл: Дом": 'materials/level5.json'
         }
         
         dropdown = UIDropdown(
-            options=["Геометрия", "Машинный код", "Корзина", "Файлы"], 
+            options=["Геометрия", "Машинный код", "Проводник", "Родной Файл: Пропуск", 'Родной Файл: Дом'], 
             width=600
         )
         dropdown.on_change = lambda event: self.on_dropdown_change(event.new_value, level_map)
@@ -97,17 +98,15 @@ class GameMenu(arcade.View):
             level_map = {
                 "Геометрия": 'materials/level1.json',
                 "Машинный код": 'materials/level2.json',
-                "Корзина": 'materials/level3.json',
-                "Файлы": 'materials/level4.json'
+                "Проводник": 'materials/level3.json',
+                "Родной Файл: Пропуск": 'materials/level4.json',
+                "Родной Файл: Дом": 'materials/level5.json'
             }
             level_path = level_map.get(self.level, 'materials/level1.json')
         else:
             level_path = self.level
             
-        if 'level4.json' in level_path:
-            pass
-        else:
-            game_view = plat.MyGame(level=level_path)
+        game_view = plat.MyGame(level=level_path)
             
         if self.window and 'game_view' in locals():
             self.window.show_view(game_view)
