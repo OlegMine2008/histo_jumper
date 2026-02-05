@@ -527,11 +527,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/level2\/comp_lvl_1.tsx"
+         "source":"../levels/level2/comp_lvl_1.tsx"
         }, 
         {
          "firstgid":17,
-         "source":"..\/level2\/comp_lvl_2.tsx"
+         "source":"../levels/level2/comp_lvl_2.tsx"
         }],
  "tilewidth":32,
  "type":"map",
