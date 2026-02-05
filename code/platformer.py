@@ -60,7 +60,7 @@ class MyGame(arcade.View):
         # Спрайт игрока.
         # На 3/4 уровнях делаем шар чуть меньше, чтобы он проходил через узкие места 1x1.
         player_scale = 2
-        if ('level3' in self.level) or ('level4' in self.level):
+        if ('level4' in self.level) or ('level5' in self.level):
             player_scale = 1.8
         self.player = arcade.Sprite("materials/character_test.png", scale=player_scale)
         self.player_spritelist = arcade.SpriteList()
