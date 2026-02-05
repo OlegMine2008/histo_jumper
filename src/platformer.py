@@ -145,16 +145,16 @@ class MyGame(arcade.View):
     def on_draw(self):
         self.clear()
         self.world_camera.use()
+        self.scene.draw()
         if self.player:  # Проверяем, что player существует
             self.player_spritelist.draw()
-        self.scene.draw()
 
         if self.darkness_alpha > 0:
             arcade.draw_lbwh_rectangle_filled(
                 left=-SCREEN_WIDTH,
                 bottom=0,
-                width=(SCREEN_WIDTH * 4),
-                height=(SCREEN_HEIGHT * 4),
+                width=(SCREEN_WIDTH * 10),
+                height=(SCREEN_HEIGHT * 10),
                 color=(0, 0, 0, int(self.darkness_alpha))
             )
 
