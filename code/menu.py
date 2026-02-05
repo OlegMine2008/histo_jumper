@@ -1,6 +1,5 @@
 import arcade
 import platformer as plat
-# import runner as run
 
 from arcade.gui import UIManager, UIFlatButton, UIDropdown
 from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
