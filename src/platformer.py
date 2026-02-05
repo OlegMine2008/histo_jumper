@@ -21,7 +21,7 @@ SCREEN_TITLE = "Just A Jumper"
 
 
 class MyGame(arcade.View):
-    def __init__(self, level="materials/level1.json"):
+    def __init__(self, level="data/materials/level1.json"):
         super().__init__()
         if 'level2' in level:
             arcade.set_background_color(arcade.color.BLACK)
@@ -62,7 +62,7 @@ class MyGame(arcade.View):
         player_scale = 2
         if ('level4' in self.level) or ('level5' in self.level):
             player_scale = 1.8
-        self.player = arcade.Sprite("materials/character_test.png", scale=player_scale)
+        self.player = arcade.Sprite("data/materials/character_test.png", scale=player_scale)
         self.player_spritelist = arcade.SpriteList()
         self.player_spritelist.append(self.player)
 
@@ -96,19 +96,19 @@ class MyGame(arcade.View):
         # Музыка уровней
         self.lvl = None
         if 'level1' in self.level:
-            self.lvl = arcade.load_sound('music/Jumper-lvl1.mp3')
+            self.lvl = arcade.load_sound('data/music/Jumper-lvl1.mp3')
         elif 'level2' in self.level:
-            self.lvl = arcade.load_sound('music/ComputerAmbience-lvl2.mp3')
+            self.lvl = arcade.load_sound('data/music/ComputerAmbience-lvl2.mp3')
         elif 'level3' in self.level:
-            self.lvl = arcade.load_sound('music\SneakySnitch-lvl3.mp3')
+            self.lvl = arcade.load_sound('data/music/SneakySnitch-lvl3.mp3')
         elif 'level4' in self.level or 'level5' in self.level:
-            self.lvl = arcade.load_sound('music/Last.mp3')
+            self.lvl = arcade.load_sound('data/music/Last.mp3')
         self.playing = False
 
         # Звуки(удар об препятствие, прыжок, батут или орб)
-        self.breaki = arcade.load_sound('audio/death.mp3')
-        self.jump = arcade.load_sound('audio/jump.mp3')
-        self.orb = arcade.load_sound('audio/orb.mp3')
+        self.breaki = arcade.load_sound('data/audio/death.mp3')
+        self.jump = arcade.load_sound('data/audio/jump.mp3')
+        self.orb = arcade.load_sound('data/audio/orb.mp3')
 
         self.engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player,

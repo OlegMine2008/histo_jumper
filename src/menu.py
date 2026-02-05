@@ -8,17 +8,17 @@ from arcade.gui.widgets.layout import UIAnchorLayout, UIBoxLayout
 class GameMenu(arcade.View):
     def __init__(self):
         super().__init__()
-        self.background = arcade.load_texture('materials/menu_background.png')
+        self.background = arcade.load_texture('data/materials/menu_background.png')
     
         # Создаем камеру для меню
         self.camera = arcade.camera.Camera2D()
     
-        self.logo = arcade.Sprite('materials/Logo1.png', scale=0.8)
+        self.logo = arcade.Sprite('data/materials/Logo1.png', scale=0.8)
         self.menu_list = arcade.SpriteList()
         self.menu_list.append(self.logo)
 
         # Переменная выбора уровня - храним путь к файлу
-        self.level = 'materials/level1.json'
+        self.level = 'data/materials/level1.json'
     
         # UIManager — сердце GUI
         self.manager = UIManager()
@@ -56,11 +56,11 @@ class GameMenu(arcade.View):
     
     def setup_widgets(self):
         level_map = {
-            "Геометрия": 'materials/level1.json',
-            "Машинный код": 'materials/level2.json',
-            "Проводник": 'materials/level3.json',
-            "Родной Файл: Пропуск": 'materials/level4.json',
-            "Родной Файл: Дом": 'materials/level5.json'
+            "Геометрия": 'data/materials/level1.json',
+            "Машинный код": 'data/materials/level2.json',
+            "Проводник": 'data/materials/level3.json',
+            "Родной Файл: Пропуск": 'data/materials/level4.json',
+            "Родной Файл: Дом": 'data/materials/level5.json'
         }
         
         dropdown = UIDropdown(
@@ -86,7 +86,7 @@ class GameMenu(arcade.View):
         )
     
     def on_dropdown_change(self, value, level_map):
-        self.level = level_map.get(value, 'materials/level1.json')
+        self.level = level_map.get(value, 'data/materials/level1.json')
 
     def on_mouse_press(self, x, y, button, modifiers):
         pass
@@ -95,13 +95,13 @@ class GameMenu(arcade.View):
         if isinstance(self.level, str) and not self.level.endswith('.json'):
             # Если это просто название уровня, преобразуем в путь
             level_map = {
-                "Геометрия": 'materials/level1.json',
-                "Машинный код": 'materials/level2.json',
-                "Проводник": 'materials/level3.json',
-                "Родной Файл: Пропуск": 'materials/level4.json',
-                "Родной Файл: Дом": 'materials/level5.json'
+                "Геометрия": 'data/materials/level1.json',
+                "Машинный код": 'data/materials/level2.json',
+                "Проводник": 'data/materials/level3.json',
+                "Родной Файл: Пропуск": 'data/materials/level4.json',
+                "Родной Файл: Дом": 'data/materials/level5.json'
             }
-            level_path = level_map.get(self.level, 'materials/level1.json')
+            level_path = level_map.get(self.level, 'data/materials/level1.json')
         else:
             level_path = self.level
             
