@@ -13,19 +13,19 @@
             "scaleInDock": 1
         },
         "D:/MyNewWork/yandex/repo/histo_jumper/level1/level1.tmx": {
-            "scale": 2,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 344.25,
-                "y": 163.5
+                "x": 499,
+                "y": 2830
             }
         },
         "comp_lvl2.tmx": {
             "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1764,
-                "y": 1268
+                "x": 988,
+                "y": 1198
             }
         },
         "comp_lvl_1.tsx": {
